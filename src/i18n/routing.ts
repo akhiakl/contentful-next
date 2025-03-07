@@ -1,10 +1,14 @@
 import { defineRouting } from "next-intl/routing";
-import { createNavigation } from "next-intl/navigation";
 
 export const routing = defineRouting({
-  // A list of all locales that are supported
-  locales: ["en", "fr"],
-
-  // Used when no locale matches
-  defaultLocale: "en",
+  locales: ["en-US", "fr-CA"],
+  defaultLocale: "en-US",
+  localeCookie: false,
+  localePrefix: {
+    mode: "as-needed",
+    prefixes: {
+      "en-US": "/en",
+      "fr-CA": "/fr",
+    },
+  },
 });
