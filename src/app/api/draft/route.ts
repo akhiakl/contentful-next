@@ -56,7 +56,6 @@ export async function GET(request: NextRequest): Promise<Response | void> {
     locale,
     contentfulPreviewSecret: contentfulPreviewSecretFromQuery,
   } = parseRequestUrl(request.url);
-  console.log({ locale });
   // if we're in development, we don't need to check, we can just enable draft mode
   if (process.env.NODE_ENV === "development") {
     await enableDraftMode();

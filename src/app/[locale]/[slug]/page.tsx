@@ -2,17 +2,32 @@ import type { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 
-import { ArticleContent, ArticleHero } from "@/components/features/article";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import { getClient } from "@/lib/contentful/client";
+import BlogPost from "@/components/blog/BlogPost";
+import { TypeBlogPostSkeleton } from "@/lib/contentful/types";
+import BlogHero from "@/components/blog/BlogHero";
+import BlogGrid from "@/components/blog/BlogGrid";
+import { Suspense } from "react";
+import BlogTopAuthors from "@/components/blog/BlogTopAuthors";
+import BlogCategories from "@/components/blog/BlogCategories";
+
+interface BlogPageProps {
+  params: Promise<{
+    locale: string;
+    slug: string;
+  }>;
+}
 
 export async function generateMetadata({
   params,
 }: BlogPageProps): Promise<Metadata> {
   const { locale, slug } = await params;
   const { isEnabled: preview } = await draftMode();
-  const pageBlogPostCollection = await getClient(preview).getEntries({
-    content_type: "blogPostPage",
+  const pageBlogPostCollection = await getClient(
+    preview
+  ).getEntries<TypeBlogPostSkeleton>({
+    content_type: "blogPost",
     "fields.slug": slug,
     limit: 1,
     locale,
@@ -29,7 +44,7 @@ export async function generateMetadata({
     metadata.title = (blogPost?.fields.seoPageTitle ??
       blogPost?.fields.title) as string;
     metadata.description = (blogPost?.fields.seoPageDescription ??
-      blogPost?.fields.shortDescription) as string;
+      blogPost?.fields.description) as string;
     metadata.robots = {
       follow: !blogPost?.fields.nofollow,
       index: !blogPost?.fields.noindex,
@@ -67,20 +82,14 @@ export async function generateMetadata({
 //     });
 // }
 
-interface BlogPageProps {
-  params: {
-    locale: string;
-    slug: string;
-  };
-}
-
 export default async function Page({ params }: BlogPageProps) {
   const { slug } = await params;
   const { isEnabled: preview } = await draftMode();
-  const t = await getTranslations();
   const locale = await getLocale();
-  const pageBlogPostCollection = await getClient(preview).getEntries({
-    content_type: "blogPostPage",
+  const pageBlogPostCollection = await getClient(
+    preview
+  ).withoutUnresolvableLinks.getEntries<TypeBlogPostSkeleton>({
+    content_type: "blogPost",
     "fields.slug": slug,
     limit: 1,
     locale,
@@ -93,13 +102,37 @@ export default async function Page({ params }: BlogPageProps) {
   }
 
   return (
-    <>
-      <div>
-        <ArticleHero article={blogPost} isReversedLayout={true} />
+    <div className="px-4 md:px-6 mx-auto">
+      <div className="grid grid-cols-4 gap-4">
+        <div className="col-span-3">
+          <BlogHero blog={blogPost} />
+          <div>
+            <BlogPost blog={blogPost} />
+            <div className="py-4">
+              <h2 className="mb-10">
+                <span className="bg-primary text-secondary px-2">
+                  See related
+                </span>{" "}
+                posts
+              </h2>
+              {blogPost.fields.relatedBlogPosts && (
+                <BlogGrid blogs={blogPost.fields.relatedBlogPosts} />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col gap-8 md:gap-12 px-3">
+          <Suspense fallback={<div>Loading...</div>}>
+            <BlogTopAuthors isDraftModeEnabled={preview} />
+          </Suspense>
+          <div className="h-80 bg-primary text-secondary">
+            <sub>Ad</sub>
+          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <BlogCategories isDraftModeEnabled={preview} />
+          </Suspense>
+        </div>
       </div>
-      <div className="mt-8 max-w-4xl">
-        <ArticleContent article={blogPost} />
-      </div>
-    </>
+    </div>
   );
 }
