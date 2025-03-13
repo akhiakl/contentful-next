@@ -1,7 +1,11 @@
 import { getClient } from "@/lib/contentful/client";
 import { TypeAuthorSkeleton } from "@/lib/contentful/types";
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
 
 type Props = {
   isDraftModeEnabled?: boolean;

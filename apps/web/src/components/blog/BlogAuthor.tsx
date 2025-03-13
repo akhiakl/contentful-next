@@ -1,8 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { cn } from "@/lib/utils";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/avatar";
+import { cn } from "@repo/ui/lib/utils";
 import {
   useContentfulInspectorMode,
   useContentfulLiveUpdates,

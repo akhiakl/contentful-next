@@ -11,6 +11,7 @@ import BlogGrid from "@/components/blog/BlogGrid";
 import { Suspense } from "react";
 import BlogTopAuthors from "@/components/blog/BlogTopAuthors";
 import BlogCategories from "@/components/blog/BlogCategories";
+import { Summarizer, QnAComponent } from "@repo/ai-companion";
 
 interface BlogPageProps {
   params: Promise<{
@@ -132,6 +133,15 @@ export default async function Page({ params }: BlogPageProps) {
             <BlogCategories isDraftModeEnabled={preview} />
           </Suspense>
         </div>
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">Summarize Content</h2>
+          <Summarizer />
+        </section>
+
+        <section>
+          <h2 className="text-2xl font-semibold mb-4">Ask a Question</h2>
+          <QnAComponent context={blogPost.fields.content?.content} />
+        </section>
       </div>
     </div>
   );

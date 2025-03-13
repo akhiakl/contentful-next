@@ -7,7 +7,7 @@ import {
 import { CtfImage } from "@/components/contentful";
 import { TypeBlogPost } from "@/lib/contentful/types";
 import BlogAuthor from "./BlogAuthor";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@repo/ui/components/badge";
 import BlogDate from "./BlogDate";
 
 interface BlogHeroProps {
