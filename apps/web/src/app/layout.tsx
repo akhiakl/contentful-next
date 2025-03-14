@@ -1,5 +1,6 @@
 import { siteConfig } from "@/config/site";
 import "@repo/ui/globals.css";
+import { languages } from "./shared-metadata";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -11,10 +12,7 @@ export const metadata = {
   description: siteConfig.description,
   alternates: {
     canonical: "/",
-    languages: {
-      ...siteConfig.localePrefixes,
-      [siteConfig.defaultLocale]: "/",
-    },
+    languages,
   },
 };
 

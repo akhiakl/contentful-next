@@ -12,12 +12,15 @@ import { Suspense } from "react";
 import BlogTopAuthors from "@/components/blog/BlogTopAuthors";
 import BlogCategories from "@/components/blog/BlogCategories";
 import { QnA, Summarizer } from "@repo/ai-companion/server";
+import { getLocalePrefixes } from "@/app/shared-metadata";
+import { siteConfig } from "@/config/site";
 
+interface BlogPageParams {
+  locale: string;
+  slug: string;
+}
 interface BlogPageProps {
-  params: Promise<{
-    locale: string;
-    slug: string;
-  }>;
+  params: Promise<BlogPageParams>;
 }
 
 export async function generateMetadata({
@@ -37,7 +40,8 @@ export async function generateMetadata({
 
   const metadata: Metadata = {
     alternates: {
-      canonical: slug,
+      canonical: `/${slug}`,
+      languages: getLocalePrefixes(slug),
     },
   };
 
@@ -55,33 +59,27 @@ export async function generateMetadata({
   return metadata;
 }
 
-// export async function generateStaticParams({
-//   params,
-// }: {
-//   params: { locale: string };
-// }): Promise<BlogPageProps["params"][]> {
-//   const { locale } = await params;
-//   const pageBlogPostCollection = await getClient(false).getEntries({
-//     content_type: "blogPostPage",
-//     limit: 100,
-//     locale,
-//   });
+export async function generateStaticParams(): Promise<BlogPageParams[]> {
+  const blogPostCollection = await getClient(false).getEntries({
+    content_type: "blogPost",
+    limit: 100,
+    locale: siteConfig.defaultLocale,
+    select: ["fields.slug"],
+  });
 
-//   if (!pageBlogPostCollection?.items) {
-//     throw new Error("No blog posts found");
-//   }
+  if (!blogPostCollection?.items) {
+    throw new Error("No blog posts found");
+  }
 
-//   return pageBlogPostCollection.items
-//     .filter((blogPost): blogPost is NonNullable<typeof blogPost> =>
-//       Boolean(blogPost?.fields.slug)
-//     )
-//     .map((blogPost) => {
-//       return {
-//         locale,
-//         slug: blogPost?.fields.slug as string,
-//       };
-//     });
-// }
+  return blogPostCollection.items
+    .filter((blogPost): blogPost is NonNullable<typeof blogPost> =>
+      Boolean(blogPost?.fields.slug)
+    )
+    .map((blogPost) => ({
+      locale: siteConfig.defaultLocale,
+      slug: blogPost.fields.slug as string,
+    }));
+}
 
 export default async function Page({ params }: BlogPageProps) {
   const { slug } = await params;
