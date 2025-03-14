@@ -1,6 +1,6 @@
 import * as React from "react";
-import { qna } from "@/actions/qna";
-import { QnAComponent } from "@/components/QnAComponent";
+import { qna } from "@repo/ai-companion/actions/qna";
+import { QnAComponent } from "@repo/ai-companion/components/QnAComponent";
 
 type QnAProps = {
   context?: string;

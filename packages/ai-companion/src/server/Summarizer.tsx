@@ -1,6 +1,6 @@
 import * as React from "react";
-import { SummarizerComponent } from "@/components/SummarizerComponent";
-import { summarize } from "@/actions/summarize";
+import { SummarizerComponent } from "@repo/ai-companion/components/SummarizerComponent";
+import { summarize } from "@repo/ai-companion/actions/summarize";
 
 type SummarizerProps = {
   context?: string;

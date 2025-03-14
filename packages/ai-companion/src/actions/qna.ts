@@ -1,4 +1,4 @@
-import { QnAPipeline } from "@/hugface/pipeline";
+import { QnAPipeline } from "@repo/ai-companion/hugface/pipeline";
 import { QuestionAnsweringOutput } from "@huggingface/transformers";
 
 type QnAOptions = {

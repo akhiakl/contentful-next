@@ -1,4 +1,4 @@
-import { SummarizationPipeline } from "@/hugface/pipeline";
+import { SummarizationPipeline } from "@repo/ai-companion/hugface/pipeline";
 import { SummarizationOutput } from "@huggingface/transformers";
 
 type SummarizeOptions = {
