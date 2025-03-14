@@ -1,14 +1,12 @@
 import { defineRouting } from "next-intl/routing";
+import { siteConfig } from "@/config/site";
 
 export const routing = defineRouting({
-  locales: ["en-US", "fr-CA"],
-  defaultLocale: "en-US",
+  locales: Object.keys(siteConfig.localePrefixes),
+  defaultLocale: siteConfig.defaultLocale,
   localeCookie: false,
   localePrefix: {
     mode: "as-needed",
-    prefixes: {
-      "en-US": "/en",
-      "fr-CA": "/fr",
-    },
+    prefixes: siteConfig.localePrefixes,
   },
 });
