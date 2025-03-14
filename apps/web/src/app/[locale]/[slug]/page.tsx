@@ -11,7 +11,7 @@ import BlogGrid from "@/components/blog/BlogGrid";
 import { Suspense } from "react";
 import BlogTopAuthors from "@/components/blog/BlogTopAuthors";
 import BlogCategories from "@/components/blog/BlogCategories";
-import { Summarizer, QnAComponent } from "@repo/ai-companion";
+import { QnA, Summarizer } from "@repo/ai-companion/server";
 
 interface BlogPageProps {
   params: Promise<{
@@ -109,6 +109,24 @@ export default async function Page({ params }: BlogPageProps) {
           <BlogHero blog={blogPost} />
           <div>
             <BlogPost blog={blogPost} />
+            <section>
+              <h2 className="text-2xl font-semibold mb-4">Summarize Content</h2>
+              <Summarizer
+                context={`Did you come here for something in particular or just general Riker-bashing? And blowing into maximum warp speed, you appeared for an instant to be in two places at once. We have a saboteur aboard. We know you’re dealing in stolen ore. But I wanna talk about the assassination attempt on Lieutenant Worf. Could someone survive inside a transporter buffer for 75 years? Fate. It protects fools, little children, and ships.
+
+I Created a Developer Rap Video - Here's What I Learned
+Did you come here for something in particular or just general Riker-bashing? And blowing into maximum warp speed, you appeared for an instant to be in two places at once. We have a saboteur aboard. We know you’re dealing in stolen ore. But I wanna talk about the assassination attempt`}
+              />
+            </section>
+            <section>
+              <h2 className="text-2xl font-semibold mb-4">Ask a Question</h2>
+              <QnA
+                context={`Did you come here for something in particular or just general Riker-bashing? And blowing into maximum warp speed, you appeared for an instant to be in two places at once. We have a saboteur aboard. We know you’re dealing in stolen ore. But I wanna talk about the assassination attempt on Lieutenant Worf. Could someone survive inside a transporter buffer for 75 years? Fate. It protects fools, little children, and ships.
+
+I Created a Developer Rap Video - Here's What I Learned
+Did you come here for something in particular or just general Riker-bashing? And blowing into maximum warp speed, you appeared for an instant to be in two places at once. We have a saboteur aboard. We know you’re dealing in stolen ore. But I wanna talk about the assassination attempt`}
+              />
+            </section>
             <div className="py-4">
               <h2 className="mb-10">
                 <span className="bg-primary text-secondary px-2">
@@ -133,15 +151,6 @@ export default async function Page({ params }: BlogPageProps) {
             <BlogCategories isDraftModeEnabled={preview} />
           </Suspense>
         </div>
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Summarize Content</h2>
-          <Summarizer />
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Ask a Question</h2>
-          <QnAComponent context={blogPost.fields.content?.content} />
-        </section>
       </div>
     </div>
   );
