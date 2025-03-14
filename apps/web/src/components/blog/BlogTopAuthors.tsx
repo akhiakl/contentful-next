@@ -1,11 +1,7 @@
 import { getClient } from "@/lib/contentful/client";
 import { TypeAuthorSkeleton } from "@/lib/contentful/types";
 import React from "react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@repo/ui/components/avatar";
+import { Avatar } from "@/components/avatar";
 
 type Props = {
   isDraftModeEnabled?: boolean;
@@ -27,14 +23,15 @@ const BlogTopAuthors = async ({ isDraftModeEnabled, locale }: Props) => {
       </h3>
       {topAuthors?.items?.map((author) => (
         <div key={author?.sys.id} className="flex gap-4 items-center">
-          <Avatar title={author?.fields?.name} className="size-20">
-            <AvatarImage
-              src={author?.fields?.avatar?.fields?.file?.url}
-              alt={author?.fields?.name}
-            />
-            <AvatarFallback className="uppercase">
-              {`${author?.fields?.name?.match(/\b(\w)/g)?.join("")}`}
-            </AvatarFallback>
+          <Avatar
+            title={author?.fields?.name}
+            src={author?.fields?.avatar?.fields?.file?.url}
+            alt={author?.fields?.name}
+            className="size-20"
+            size={80}
+            fallbackClassName="uppercase"
+          >
+            {`${author?.fields?.name?.match(/\b(\w)/g)?.join("")}`}
           </Avatar>
           <div>
             <div className="capitalize font-bold">{author?.fields?.name}</div>

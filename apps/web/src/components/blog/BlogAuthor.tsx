@@ -1,11 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@repo/ui/components/avatar";
+import { Avatar } from "@/components/avatar";
 import { cn } from "@repo/ui/lib/utils";
 import {
   useContentfulInspectorMode,
@@ -27,13 +23,14 @@ const BlogAuthor = ({ author, className }: BlogAuthorProps) => {
     <div className={cn("flex items-center gap-2 border-r", className)}>
       <Avatar
         title={name}
+        src={avatar?.fields?.file?.url}
+        alt={name}
         className="size-8"
+        size={32}
+        fallbackClassName="uppercase"
         {...inspectorProps({ fieldId: "avatar" })}
       >
-        <AvatarImage src={avatar?.fields?.file?.url} alt={name} />
-        <AvatarFallback className="uppercase">
-          {`${name?.match(/\b(\w)/g)?.join("")}`}
-        </AvatarFallback>
+        {`${name?.match(/\b(\w)/g)?.join("")}`}
       </Avatar>
       <span className="capitalize" {...inspectorProps({ fieldId: "name" })}>
         {name}
